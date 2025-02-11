@@ -1,28 +1,21 @@
 [project]
 name = "healthchecks"
-version = "0.1.0"
-description = "Default template for PDM package"
-authors = [
-    {name = "Lucius Gaitán", email = "lucius@luciusgaitan.com"},
-]
-dependencies = [
-    "aiohttp>=3.11.12"
-]
+version = "0.1.2"
+description = "Seamless Healthchecks.io reporting using async context managers"
+authors = [{ name = "Lucius Gaitán", email = "lucius@luciusgaitan.com" }]
+dependencies = ["aiohttp>=3.11.12"]
 requires-python = ">=3.10"
 readme = "README.md"
-license = {text = "UNLICENSED"}
+license = { text = "UNLICENSED" }
 
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [dependency-groups]
-lint = [
-    "ruff>=0.9.6",
-]
+lint = ["ruff>=0.9.6"]
 
 [tool.pdm]
 distribution = true
-
-[tool.pdm.build]
-includes = ["src/healthchecks/py.typed"]
+build.includes = ["src/healthchecks"]
+build.excludes = ["tests"]
