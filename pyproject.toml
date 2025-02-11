@@ -24,3 +24,5 @@ lint = [
 [tool.pdm]
 distribution = true
 
+[tool.pdm.build]
+includes = ["src/healthchecks/py.typed"]
