@@ -40,51 +40,49 @@ class HealthChecksContextManager(
     async def fail(self):
         self._has_signaled_stop = True
 
-        async with self._http as session:
-            return await session.request(
-                method=self._request_method,
-                url=f"{self._url}/fail",
-                params=self._params,
-            )
+        async with self._http.request(
+            method=self._request_method,
+            url=f"{self._url}/fail",
+            params=self._params,
+        ) as _:
+            pass
 
     async def log(self, log: str):
         # TODO: send only `self._ping_body_limit`
 
-        async with self._http as session:
-            return await session.request(
-                method=self._request_method,
-                url=f"{self._url}/log",
-                params=self._params,
-                data=log,
-            )
+        async with self._http.request(
+            method=self._request_method,
+            url=f"{self._url}/log",
+            params=self._params,
+            data=log,
+        ) as _:
+            pass
 
     async def exit_code(self, exit_code: int):
         self._has_signaled_stop = True
 
-        async with self._http as session:
-            return await session.request(
-                method=self._request_method,
-                url=f"{self._url}/{str(exit_code)}",
-                params=self._params,
-            )
+        async with self._http.request(
+            method=self._request_method,
+            url=f"{self._url}/{str(exit_code)}",
+            params=self._params,
+        ) as _:
+            pass
 
     async def start(self):
-        async with self._http as session:
-            response = await session.request(
-                method=self._request_method,
-                url=self._url + "/start",
-                params=self._params,
-            )
-
-        self._ping_body_limit = int(response.headers.get("Ping-Body-Limit", 0))
+        async with self._http.request(
+            method=self._request_method,
+            url=self._url + "/start",
+            params=self._params,
+        ) as response:
+            self._ping_body_limit = int(response.headers.get("Ping-Body-Limit", 0))
 
     async def stop(self):
         self._has_signaled_stop = True
 
-        async with self._http as session:
-            await session.request(
-                method=self._request_method, url=self._url, params=self._params
-            )
+        async with self._http.request(
+            method=self._request_method, url=self._url, params=self._params
+        ) as _:
+            pass
 
     async def __aenter__(self):
         await self.start()
